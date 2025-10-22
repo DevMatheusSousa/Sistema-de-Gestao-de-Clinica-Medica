@@ -24,7 +24,7 @@ public class InicializarAplicacao {
        
         medico.marcarConsulta(paciente, "12.07.2025", "10:00", "Observações", "Diagnóstico", 
             "Tratamento", "Exame", "Medicamento", StatusDeConsulta.AGENDADA);
-        
+        medico.realizarConsulta(consulta);
     
     }
 }

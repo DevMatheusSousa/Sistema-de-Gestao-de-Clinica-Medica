@@ -8,9 +8,10 @@ import com.example.enums.StatusDeConsulta;
 public class Medico extends PessoaBase {
     private String crm;
     private String especialidade;
-    private List<Paciente> pacientes;
-    private List<Consulta> consultas;
-    public Medico(String nomeCompleto, Integer idade, String cpf, String email, String telefone, String endereco, String cidade, String estado, String pais, String cep, String crm, String especialidade) {
+    private List<Paciente> pacientes = new ArrayList<Paciente>(); ;
+    private List<Consulta> consultas = new ArrayList<Consulta>(); ;
+    public Medico(String nomeCompleto, Integer idade, String cpf, String email, String telefone, String endereco, 
+    String cidade, String estado, String pais, String cep, String crm, String especialidade) {
         super(nomeCompleto, idade, cpf, email, telefone, endereco, cidade, estado, pais, cep);
         this.crm = crm;
         this.especialidade = especialidade;
@@ -18,12 +19,13 @@ public class Medico extends PessoaBase {
 
 
 
-    public void realizarConsulta(Paciente paciente, Consulta consulta) {
-        pacientes = new ArrayList<Paciente>();
-        pacientes.add(paciente);
+    public void realizarConsulta(Consulta consulta) {
         consultas.add(consulta); 
-        System.out.println("Realizando consulta para o paciente " + paciente.getNomeCompleto());
-
+        //mudar o status de EM_ANDAMENTO para CONCLUIDA
+        consulta.setStatus(StatusDeConsulta.CONCLUIDA);
+        System.out.printf("Realizando consulta para o paciente %s com o médico %s%n", 
+        consulta.getPaciente().getNomeCompleto(), this.getNomeCompleto());
+    System.out.printf("Status da consulta: %s%n", consulta.getStatus());
     }
 
     public boolean marcarConsulta(Paciente paciente, String data, String hora, String observacoes, String diagnostico, String tratamento, 
