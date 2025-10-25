@@ -24,7 +24,7 @@ public class ConsultaService {
         System.out.printf("Status da consulta: %s%n", consulta.getStatus());
         emailService.enviarEmail(prontuario.getMedico(), prontuario.getPaciente(), "Consulta realizada", "A consulta foi realizada com sucesso");
     }
-
+    
     public boolean marcarConsulta(Paciente paciente, Medico medico, String data, String hora, String observacoes, String diagnostico,
             String tratamento,
             String exame, String medicacao, StatusDeConsulta status) {

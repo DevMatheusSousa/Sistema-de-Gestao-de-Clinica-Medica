@@ -109,6 +109,7 @@ public class Prontuario  {
     
     @Override
     public String toString() {
+        //to String mais organizado
         return "Prontuario [consulta=" + consulta + ", paciente=" + paciente + ", medico=" + medico + ", data=" + data 
         + ", hora=" + hora + ", observacoes=" + observacoes + ", diagnostico=" + diagnostico + ", tratamento=" + tratamento + ", exame=" + exame 
         + ", medicacao=" + medicacao + "]";
