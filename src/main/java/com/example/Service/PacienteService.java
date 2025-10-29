@@ -11,8 +11,7 @@ public class PacienteService {
     private List<Paciente> pacientes = new ArrayList<Paciente>();
     private List<Consulta> consultas = new ArrayList<Consulta>();
 
-    public void listarPacientes(Paciente pacienteDoHospital) {
-        pacientes.add(pacienteDoHospital);
+    public void listarPacientes() {
         for (Paciente paciente : pacientes) {
             System.out.println("Lista de Paciente: " + paciente.getNomeCompleto() + "\n");
         }
@@ -24,4 +23,16 @@ public class PacienteService {
             System.out.println(consulta);
         }
     }
+
+    public void adicionarPaciente(Paciente pacienteDoHospital) {
+        pacientes.add(pacienteDoHospital);
+    }
 }
+
+/*
+ * 
+ * PacienteService.java e ProntuarioService.java
+
+    Ambos serão reestruturados de forma similar ao ConsultaService, dependendo 
+    de seus respectivos Repositorys (que você precisaria criar: PacienteRepository e ProntuarioRepository).
+ */

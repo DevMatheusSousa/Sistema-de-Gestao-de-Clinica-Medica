@@ -2,54 +2,88 @@ package com.example.Service;
 
 import java.util.List;
 
+import com.example.Repository.ConsultaRepository;
+import com.example.Service.support.EmailService;
 import com.example.entity.Consulta;
 import com.example.entity.Medico;
 import com.example.entity.Paciente;
 import com.example.entity.Prontuario;
 import com.example.enums.StatusDeConsulta;
-import java.util.ArrayList;
-
 
 public class ConsultaService {
-    private List<Consulta> consultas = new ArrayList<Consulta>();;
-    private List<Prontuario> prontuarios = new ArrayList<Prontuario>();;
+    private ConsultaRepository consultaRepository = new ConsultaRepository();
     private EmailService emailService = new EmailService();
 
-    public void realizarConsulta(Consulta consulta, Prontuario prontuario) {
-        consultas.add(consulta);
-        // mudar o status de EM_ANDAMENTO para CONCLUIDA
+    public boolean marcarConsulta(Paciente paciente, Medico medico, String data, String hora) {
+
+        // 1. REGRA DE NEGÓCIO: Checar conflito de horário para o médico.
+        boolean conflito = consultaRepository.buscarTodasConsultas().stream()
+                .anyMatch(c -> c.getProntuario().getMedico().equals(medico)
+                        && c.getProntuario().getData().equals(data)
+                        && c.getProntuario().getHora().equals(hora)
+                        && c.getStatus() == StatusDeConsulta.AGENDADA);
+
+        if (conflito) {
+            System.err.println(
+                    "ERRO DE NEGÓCIO: O médico " + medico.getNomeCompleto() + " já está ocupado neste horário.");
+            return false;
+        }
+
+        // 2. Criação do Prontuário e Consulta (Entidades)
+        Prontuario novoProntuario = new Prontuario(null, paciente, medico, data, hora, "", "", "", "", "");
+        Consulta consulta = new Consulta(novoProntuario, StatusDeConsulta.AGENDADA);
+        consultaRepository.SalvarConsulta(consulta);
+
+        // 4. LÓGICA AUXILIAR: Envia notificação
+        emailService.enviarEmail(medico, paciente, "Agendamento Confirmado",
+                "Sua consulta foi marcada para " + data + " às " + hora);
+
+        System.out.println("SUCESSO: Consulta marcada para " + paciente.getNomeCompleto());
+        return true;
+    }
+
+    public void realizarConsulta(Consulta consulta, String  diagnostico, String tratamento, String exame, String medicacao) {
+        // 1. REGRA DE NEGÓCIO: A consulta deve estar AGENDADA ou EM_ANDAMENTO
+        if (consulta.getStatus() != StatusDeConsulta.AGENDADA && consulta.getStatus() != StatusDeConsulta.EM_ANDAMENTO) {
+            System.err.println("ERRO DE NEGÓCIO: A consulta não está agendada ou em andamento.");
+            return;
+        }
+
+        // 2. Atualização do Prontuário
+        consulta.getProntuario().setDiagnostico(diagnostico);
+        consulta.getProntuario().setTratamento(tratamento);
+        consulta.getProntuario().setExame(exame);
+        consulta.getProntuario().setMedicacao(medicacao);
+
+        // 3. Atualização do Status da Consulta
         consulta.setStatus(StatusDeConsulta.CONCLUIDA);
-        System.out.printf("Realizando consulta para o paciente %s com o médico %s%n",
-        prontuario.getPaciente().getNomeCompleto(), prontuario.getMedico().getNomeCompleto());
-        System.out.printf("Status da consulta: %s%n", consulta.getStatus());
-        emailService.enviarEmail(prontuario.getMedico(), prontuario.getPaciente(), "Consulta realizada", "A consulta foi realizada com sucesso");
+
+        // 4. LÓGICA AUXILIAR: Envia notificação
+        emailService.enviarEmail(consulta.getProntuario().getMedico(), consulta.getProntuario().getPaciente(), "Consulta realizada", "A consulta foi realizada com sucesso");
+
+        System.out.println("SUCESSO: Consulta realizada para " + consulta.getProntuario().getPaciente().getNomeCompleto());
     }
-    
-    public boolean marcarConsulta(Paciente paciente, Medico medico, String data, String hora, String observacoes, String diagnostico,
-            String tratamento,
-            String exame, String medicacao, StatusDeConsulta status) {
 
-        consultas = new ArrayList<Consulta>();
 
-        Prontuario prontuario = new Prontuario(null, paciente, medico, data, hora, observacoes, diagnostico, tratamento, exame, medicacao);
-        Consulta consulta = new Consulta(prontuario, status);
-        consultas.add(consulta);
-        if (consultas.size() == 0) {
-            System.out.println("Marcando consulta para o paciente " + paciente.getNomeCompleto());
+    // Correção do método de Cancelamento
+    public boolean cancelarConsulta(Consulta consulta) {
+        if (consulta.getStatus() != StatusDeConsulta.AGENDADA) {
+            System.err.println("ERRO DE NEGÓCIO: A consulta não está agendada.");
+            return false;
+        }
+
+        // 2. Atualização do Status da Consulta
+        consulta.setStatus(StatusDeConsulta.CANCELADA);
+
+        // 3. LÓGICA AUXILIAR: Envia notificação
+        boolean removido = consultaRepository.RemoverConsulta(consulta);
+
+        if (removido) {
+            System.out.println("SUCESSO: Consulta cancelada para " + consulta.getProntuario().getPaciente().getNomeCompleto());
             return true;
+        } else {
+            System.err.println("ERRO: Falha ao cancelar a consulta.");
+            return false;
         }
-        System.out.println("Consulta já marcada para o paciente " + paciente.getNomeCompleto());
-        return false;
-    }
-
-    public boolean cancelarConsulta(Paciente paciente, Medico medico, String data, String hora) {
-        for(Prontuario prontuario : prontuarios) {
-            if (prontuario.getPaciente().getNomeCompleto().equals(paciente.getNomeCompleto())
-                    && prontuario.getData().equals(data) && prontuario.getHora().equals(hora)) {
-                consultas.remove(prontuario);
-                return true;
-            }
-        }
-        return false;
     }
 }

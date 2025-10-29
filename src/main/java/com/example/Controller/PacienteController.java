@@ -1,22 +1,16 @@
 package com.example.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.Service.PacienteService;
-import com.example.entity.Paciente;
-
+import com.example.entity.Paciente; 
 public class PacienteController {
-    List<Paciente> pacientes = new ArrayList<Paciente>();
+    PacienteService pacienteService = new PacienteService();
 
-    // public void listarPacientes(Paciente paciente){
-    // PacienteService pacienteService = new PacienteService();
-    // pacienteService.listarPacientes(paciente);
-    // }
+    public void cadastrarPaciente(Paciente paciente) {
+        pacienteService.adicionarPaciente(paciente);
+        System.out.println("Paciente cadastrado com sucesso " + paciente.getNomeCompleto());
+    }
 
-    public List<Paciente> listarPacientes(Paciente paciente) {
-        PacienteService pacienteService = new PacienteService();
-        pacienteService.listarPacientes(paciente);
-        return pacientes;
+    public void mostrarPacientes() {
+        pacienteService.listarPacientes();
     }
 }

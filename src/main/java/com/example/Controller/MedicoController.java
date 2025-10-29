@@ -1,6 +1,6 @@
 package com.example.Controller;
 
-import com.example.entity.MedicoService;
+import com.example.Service.MedicoService;
 
 public class MedicoController {
     private MedicoService medicoService = new MedicoService();

@@ -12,6 +12,10 @@ public class Prontuario  {
     private String exame;
     private String medicacao;
 
+    public Prontuario(){
+        
+    }
+
     public Prontuario(Consulta consulta, Paciente paciente, Medico medico, String data, String hora, 
     String observacoes, String diagnostico, String tratamento, String exame, String medicacao) {
         this.consulta = consulta;

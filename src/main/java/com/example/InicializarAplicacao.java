@@ -3,7 +3,6 @@ package com.example;
 import com.example.Controller.ConsultaController;
 import com.example.Controller.PacienteController;
 import com.example.Service.ConsultaService;
-import com.example.Service.PacienteService;
 import com.example.entity.Consulta;
 import com.example.entity.Medico;
 import com.example.entity.Paciente;
@@ -37,11 +36,12 @@ public class InicializarAplicacao {
     
 
         ConsultaController consultaController = new ConsultaController();
-        //consultaController.listarConsultas(consulta);
+        consultaController.listarConsultas(consulta);
 
         PacienteController pacienteController = new PacienteController();
-        //pacienteController.listarPacientes(paciente);
-        pacienteController.listarPacientes(paciente);
+        pacienteController.cadastrarPaciente(paciente);
+        pacienteController.mostrarPacientes();
+        
       
     }
 }
