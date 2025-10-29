@@ -27,11 +27,11 @@ public class InicializarAplicacao {
         
         Consulta consulta = new Consulta(prontuario, StatusDeConsulta.AGENDADA);
        
-        ConsultaService consultaService = new ConsultaService();
-        consultaService.marcarConsulta(paciente, medico, "12.07.2025", "10:00", "Observações", "Diagnóstico", 
-        "Tratamento", "Exame", "Medicamento", StatusDeConsulta.AGENDADA);
-        consultaService.realizarConsulta(consulta, prontuario);
-        consultaService.cancelarConsulta(paciente, medico, "12.07.2025", "10:00");
+        // ConsultaService consultaService = new ConsultaService();
+        // consultaService.marcarConsulta(paciente, medico, "12.07.2025", "10:00", "Observações", "Diagnóstico", 
+        // "Tratamento", "Exame", "Medicamento", StatusDeConsulta.AGENDADA);
+        // consultaService.realizarConsulta(consulta, prontuario);
+        // consultaService.cancelarConsulta(paciente, medico, "12.07.2025", "10:00");
 
     
 
