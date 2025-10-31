@@ -1,6 +1,5 @@
 package com.example.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Repository.ConsultaRepository;
@@ -33,7 +32,7 @@ public class ConsultaService {
         // 2. Criação do Prontuário e Consulta (Entidades)
         Prontuario novoProntuario = new Prontuario(null, paciente, medico, data, hora, "", "", "", "", "");
         Consulta consulta = new Consulta(novoProntuario, StatusDeConsulta.AGENDADA);
-        consultaRepository.SalvarConsulta(consulta);
+        consultaRepository.salvarConsulta(consulta);
 
         // 4. LÓGICA AUXILIAR: Envia notificação
         emailService.enviarEmail(medico, paciente, "Agendamento Confirmado",
@@ -80,7 +79,7 @@ public class ConsultaService {
         consulta.setStatus(StatusDeConsulta.CANCELADA);
 
         // 3. LÓGICA AUXILIAR: Envia notificação
-        boolean removido = consultaRepository.RemoverConsulta(consulta);
+        boolean removido = consultaRepository.removerConsulta(consulta);
 
         if (removido) {
             System.out.println(
