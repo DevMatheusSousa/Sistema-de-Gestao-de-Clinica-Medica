@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.entity.Consulta;
-import com.example.entity.Prontuario;
 
 public class ConsultaRepository {
     /** * Repository: Responsável EXCLUSIVAMENTE pela manipulação do banco de dados (aqui, listas em memória).
@@ -17,10 +16,11 @@ public class ConsultaRepository {
  }
 
 
- public void listarConsultas() {
-   for (Consulta consulta : consultas) {
-       System.out.println(consulta);
+ public List<Consulta> listarConsultas() {
+   for(Consulta consulta : consultas){
+      System.out.println(consulta);
    }
+   return new ArrayList<>(consultas);
 }
 
  public boolean RemoverConsulta(Consulta consulta) {

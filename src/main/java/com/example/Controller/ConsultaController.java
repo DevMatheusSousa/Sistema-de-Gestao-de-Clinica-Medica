@@ -1,18 +1,14 @@
 package com.example.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Service.ConsultaService;
 import com.example.entity.Consulta;
 
 public class ConsultaController {
-    List<Consulta> consultas = new ArrayList<Consulta>();
+    private final ConsultaService consultaService = new ConsultaService();
 
-    public void listarConsultas(Consulta consulta){
-        consultas.add(consulta);
-        for(Consulta consultaDoHospital : consultas) {
-            System.out.println(consultaDoHospital);
-        }
+    public List<Consulta> listarConsultas(Consulta consulta) {
+        return consultaService.listarConsultas();
     }
-    
 }

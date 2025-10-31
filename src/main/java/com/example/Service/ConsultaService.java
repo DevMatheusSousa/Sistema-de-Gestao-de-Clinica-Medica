@@ -1,5 +1,6 @@
 package com.example.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.Repository.ConsultaRepository;
@@ -42,9 +43,11 @@ public class ConsultaService {
         return true;
     }
 
-    public void realizarConsulta(Consulta consulta, String  diagnostico, String tratamento, String exame, String medicacao) {
+    public void realizarConsulta(Consulta consulta, String diagnostico, String tratamento, String exame,
+            String medicacao) {
         // 1. REGRA DE NEGÓCIO: A consulta deve estar AGENDADA ou EM_ANDAMENTO
-        if (consulta.getStatus() != StatusDeConsulta.AGENDADA && consulta.getStatus() != StatusDeConsulta.EM_ANDAMENTO) {
+        if (consulta.getStatus() != StatusDeConsulta.AGENDADA
+                && consulta.getStatus() != StatusDeConsulta.EM_ANDAMENTO) {
             System.err.println("ERRO DE NEGÓCIO: A consulta não está agendada ou em andamento.");
             return;
         }
@@ -59,11 +62,12 @@ public class ConsultaService {
         consulta.setStatus(StatusDeConsulta.CONCLUIDA);
 
         // 4. LÓGICA AUXILIAR: Envia notificação
-        emailService.enviarEmail(consulta.getProntuario().getMedico(), consulta.getProntuario().getPaciente(), "Consulta realizada", "A consulta foi realizada com sucesso");
+        emailService.enviarEmail(consulta.getProntuario().getMedico(), consulta.getProntuario().getPaciente(),
+                "Consulta realizada", "A consulta foi realizada com sucesso");
 
-        System.out.println("SUCESSO: Consulta realizada para " + consulta.getProntuario().getPaciente().getNomeCompleto());
+        System.out.println(
+                "SUCESSO: Consulta realizada para " + consulta.getProntuario().getPaciente().getNomeCompleto());
     }
-
 
     // Correção do método de Cancelamento
     public boolean cancelarConsulta(Consulta consulta) {
@@ -79,11 +83,16 @@ public class ConsultaService {
         boolean removido = consultaRepository.RemoverConsulta(consulta);
 
         if (removido) {
-            System.out.println("SUCESSO: Consulta cancelada para " + consulta.getProntuario().getPaciente().getNomeCompleto());
+            System.out.println(
+                    "SUCESSO: Consulta cancelada para " + consulta.getProntuario().getPaciente().getNomeCompleto());
             return true;
         } else {
             System.err.println("ERRO: Falha ao cancelar a consulta.");
             return false;
         }
+    }
+
+    public List<Consulta> listarConsultas() {
+        return consultaRepository.listarConsultas();
     }
 }

@@ -29,10 +29,3 @@ public class PacienteService {
     }
 }
 
-/*
- * 
- * PacienteService.java e ProntuarioService.java
-
-    Ambos serão reestruturados de forma similar ao ConsultaService, dependendo 
-    de seus respectivos Repositorys (que você precisaria criar: PacienteRepository e ProntuarioRepository).
- */

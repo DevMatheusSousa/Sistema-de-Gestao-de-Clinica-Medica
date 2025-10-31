@@ -21,11 +21,7 @@ public class MedicoRepository {
         return new ArrayList<>(this.medicos);
     }
 
-    public void listarConsultas() {
-        for (Consulta consulta : consultas) {
-            System.out.println(consulta);
-        }
-    }
+    
 
     public void adicionarPaciente(Paciente paciente) {
         pacientes.add(paciente);
