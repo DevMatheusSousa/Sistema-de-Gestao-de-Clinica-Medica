@@ -95,4 +95,8 @@ public class ConsultaService {
     public List<Consulta> listarConsultas() {
         return consultaRepository.listarConsultas();
     }
+
+    public boolean agendarConsulta(Paciente paciente, Medico medico, String data, String hora) {
+        return marcarConsulta(paciente, medico, data, hora);
+    }
 }
